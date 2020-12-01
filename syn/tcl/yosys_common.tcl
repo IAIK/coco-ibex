@@ -9,4 +9,4 @@ print_yosys_banner
 
 source ./tcl/lr_synth_flow_var_setup.tcl
 
-yosys "read_liberty -lib $lr_synth_cell_library_path"
+# yosys "read_liberty -lib $lr_synth_cell_library_path"

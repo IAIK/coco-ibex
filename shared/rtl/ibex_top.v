@@ -1,4 +1,4 @@
-`include "secure.sv"
+`include "../../rtl/secure.sv"
 
 `ifdef MEM_SECURE
   `include "ram_1p_secure.v"
@@ -8,14 +8,14 @@
 `endif
 
 module ibex_top (clk_sys, rst_sys_n, 
-                 `ifndef MEM_SECURE
+                 `ifdef MEM_SECURE
                  instr_we, instr_be, instr_wdata
                  `endif
 );
   // Inputs
   input clk_sys;
   input rst_sys_n;
-  `ifndef
+  `ifdef MEM_SECURE
   input instr_we;
   input [3:0] instr_be;
   input [31:0] instr_wdata;
@@ -75,10 +75,7 @@ module ibex_top (clk_sys, rst_sys_n,
   `endif
   
   // The ibex core
-  ibex_core u_core #(
-      .DmHaltAddr(32'h00000000),
-      .DmExceptionAddr(32'h00000000)
-  ) u_core (
+  ibex_core u_core (
      .clk_i                 (clk_sys),
      .rst_ni                (rst_sys_n),
 
@@ -129,7 +126,7 @@ module ibex_top (clk_sys, rst_sys_n,
     .wdata_i   ( data_wdata   ),
     .rvalid_o  ( data_rvalid  ),
     .rdata_o   ( data_rdata   ),
-    .gnt_o     (data_gnt      )
+    .gnt_o     ( data_gnt     )
   );
 
   rom_1p instr_rom (

@@ -913,7 +913,7 @@ module ibex_cs_registers #(
     .counterh_we_i(mhpmcounterh_we[0]),
     .counter_we_i(mhpmcounter_we[0]),
     .counter_val_i(csr_wdata_int),
-    .counter_val_o(mhpmcounter[0:0])
+    .counter_val_o(mhpmcounter[0])
   );
 
   ibex_counters #(
@@ -927,28 +927,42 @@ module ibex_cs_registers #(
     .counterh_we_i(mhpmcounterh_we[2]),
     .counter_we_i(mhpmcounter_we[2]),
     .counter_val_i(csr_wdata_int),
-    .counter_val_o(mhpmcounter[2:2])
+    .counter_val_o(mhpmcounter[2])
   );
 
   // reserved:
   assign mhpmcounter[1] = '0;
-
-  ibex_counters #(
-    .MaxNumCounters(29),
-    .NumCounters(MHPMCounterNum),
-    .CounterWidth(MHPMCounterWidth)
-  ) mcounters_variable_i (
-    .clk_i(clk_i),
-    .rst_ni(rst_ni),
-    .counter_inc_i(mhpmcounter_incr[31:3] & ~mcountinhibit[31:3]),
-    .counterh_we_i(mhpmcounterh_we[31:3]),
-    .counter_we_i(mhpmcounter_we[31:3]),
-    .counter_val_i(csr_wdata_int),
-    .counter_val_o(mhpmcounter[3:31])
-  );
+  
+  for (genvar cnt=0; cnt < 29; cnt++) begin : gen_cntrs
+    if (cnt < MHPMCounterNum) begin : gen_imp
+      ibex_counters #(
+        .MaxNumCounters(1),
+        .NumCounters(1),
+        .CounterWidth(MHPMCounterWidth)
+      ) mcounters_variable_i (
+        .clk_i(clk_i),
+        .rst_ni(rst_ni),
+        .counter_inc_i(mhpmcounter_incr[cnt+3] & ~mcountinhibit[cnt+3]),
+        .counterh_we_i(mhpmcounterh_we[cnt+3]),
+        .counter_we_i(mhpmcounter_we[cnt+3]),
+        .counter_val_i(csr_wdata_int),
+        .counter_val_o(mhpmcounter[cnt+3])
+      );
+    end else begin : gen_unimp
+      assign mhpmcounter[cnt+3] = '0;
+    end
+  end
 
   if(MHPMCounterNum < 29) begin : g_mcountinhibit_reduced
+    logic [29-MHPMCounterNum-1:0] unused_mhphcounter_we;
+    logic [29-MHPMCounterNum-1:0] unused_mhphcounterh_we;
+    logic [29-MHPMCounterNum-1:0] unused_mhphcounter_incr;
+
     assign mcountinhibit = {{29-MHPMCounterNum{1'b1}}, mcountinhibit_q};
+    // Lint tieoffs for unused bits
+    assign unused_mhphcounter_we   = mhpmcounter_we[31:MHPMCounterNum+3];
+    assign unused_mhphcounterh_we  = mhpmcounterh_we[31:MHPMCounterNum+3];
+    assign unused_mhphcounter_incr = mhpmcounter_incr[31:MHPMCounterNum+3];
   end else begin : g_mcountinhibit_full
     assign mcountinhibit = mcountinhibit_q;
   end
@@ -960,7 +974,7 @@ module ibex_cs_registers #(
       mcountinhibit_q <= mcountinhibit_d;
     end
   end
-
+  
   /////////////////////////////
   // Debug trigger registers //
   /////////////////////////////
