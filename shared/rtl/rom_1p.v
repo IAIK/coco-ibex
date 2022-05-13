@@ -20,8 +20,8 @@ module rom_1p (
     input        [ 3:0] be_i;
     input        [31:0] addr_i;
     input        [31:0] wdata_i;
-    output        rvalid_o;
-    output  [31:0] rdata_o;
+    output logic        rvalid_o;
+    output logic [31:0] rdata_o;
 
   localparam Depth = 256;
   localparam Aw = $clog2(Depth);
