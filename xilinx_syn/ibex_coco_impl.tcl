@@ -1,8 +1,8 @@
 
 read_verilog ../rtl/secure.sv
-#read_verilog /nfs/home/tanvira/security_research_project/lec_out_coco/prim_assert.sv
+read_verilog ../shared/rtl/prim_assert.sv
 set_property file_type "Verilog Header" [get_files ../rtl/secure.sv]
-#set_property file_type "Verilog Header" [get_files /nfs/home/tanvira/security_research_project/lec_out_coco/prim_assert.sv]
+set_property file_type "Verilog Header" [get_files ../shared/rtl/prim_assert.sv]
 read_verilog -library xil_defaultlib -sv ../rtl/ibex_pkg.sv
 read_verilog -library xil_defaultlib -sv ../rtl/ibex_alu.sv
 read_verilog -library xil_defaultlib -sv ../rtl/ibex_compressed_decoder.sv
@@ -22,16 +22,15 @@ read_verilog -library xil_defaultlib -sv ../rtl/ibex_pmp.sv
 read_verilog -library xil_defaultlib -sv ../rtl/ibex_prefetch_buffer.sv
 read_verilog -library xil_defaultlib -sv ../rtl/ibex_register_file_ff.sv
 read_verilog -library xil_defaultlib -sv ../rtl/ibex_wb_stage.sv
-#read_verilog -library xil_defaultlib -sv /nfs/home/tanvira/security_research_project/lec_out_coco/prim_generic_ram_1p.sv
-#read_verilog -library xil_defaultlib -sv /nfs/home/tanvira/security_research_project/lec_out_coco/ram_1p_secure.v
-#read_verilog -library xil_defaultlib -sv /nfs/home/tanvira/security_research_project/lec_out_coco/rom_1p.v
-#read_verilog -library xil_defaultlib -sv /nfs/home/tanvira/security_research_project/lec_out_coco/prim_secded_28_22_dec.sv
-#read_verilog -library xil_defaultlib -sv /nfs/home/tanvira/security_research_project/lec_out_coco/prim_secded_28_22_enc.sv
-#read_verilog -library xil_defaultlib -sv /nfs/home/tanvira/security_research_project/lec_out_coco/prim_secded_72_64_dec.sv
-#read_verilog -library xil_defaultlib -sv /nfs/home/tanvira/security_research_project/lec_out_coco/prim_secded_72_64_enc.sv
+read_verilog -library xil_defaultlib -sv ../shared/rtl/prim_generic_ram_1p.sv
+read_verilog -library xil_defaultlib -sv ../shared/rtl/ram_1p_secure.v
+read_verilog -library xil_defaultlib -sv ../shared/rtl/rom_1p.v
+read_verilog -library xil_defaultlib -sv ../shared/rtl/prim_secded_28_22_dec.sv
+read_verilog -library xil_defaultlib -sv ../shared/rtl/prim_secded_28_22_enc.sv
+read_verilog -library xil_defaultlib -sv ../shared/rtl/prim_secded_72_64_dec.sv
+read_verilog -library xil_defaultlib -sv ../shared/rtl/prim_secded_72_64_enc.sv
 read_verilog -library xil_defaultlib -sv ../rtl/ibex_core.sv
 read_verilog -library xil_defaultlib -sv ../rtl/ibex_top.v
-
 
 
 
