@@ -913,7 +913,7 @@ module ibex_cs_registers #(
     .counterh_we_i(mhpmcounterh_we[0]),
     .counter_we_i(mhpmcounter_we[0]),
     .counter_val_i(csr_wdata_int),
-    .counter_val_o(mhpmcounter[0])
+    .counter_val_o(mhpmcounter[0:0])
   );
 
   ibex_counters #(
@@ -927,7 +927,7 @@ module ibex_cs_registers #(
     .counterh_we_i(mhpmcounterh_we[2]),
     .counter_we_i(mhpmcounter_we[2]),
     .counter_val_i(csr_wdata_int),
-    .counter_val_o(mhpmcounter[2])
+    .counter_val_o(mhpmcounter[2:2])
   );
 
   // reserved:
