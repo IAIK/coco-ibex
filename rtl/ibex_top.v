@@ -15,7 +15,7 @@ module ibex_top (clk_sys, rst_sys_n,
   // Inputs
   input clk_sys;
   input rst_sys_n;
-  `ifndef
+  `ifndef MEM_SECURE
   input instr_we;
   input [3:0] instr_be;
   input [31:0] instr_wdata;
@@ -29,7 +29,7 @@ module ibex_top (clk_sys, rst_sys_n,
   
   // Instruction connection to SRAM
   wire        instr_req;
-  wire        instr_gnt;
+  logic       instr_gnt;
   wire        instr_rvalid;
   wire [31:0] instr_addr;
   wire [31:0] instr_rdata;
@@ -75,7 +75,7 @@ module ibex_top (clk_sys, rst_sys_n,
   `endif
   
   // The ibex core
-  ibex_core u_core #(
+  ibex_core #(
       .DmHaltAddr(32'h00000000),
       .DmExceptionAddr(32'h00000000)
   ) u_core (
